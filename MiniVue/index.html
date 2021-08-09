@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MiniVue</title>
+  <script src="./src/observer.js"></script>
+  <script src="./src/dep.js"></script>
+  <script src="./src/compile.js"></script>
+  <script src="./src/watcher.js"></script>
+  <script src="./src/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div>名字: {{name}}</div>
+    <div>年龄: {{config.age}}</div>
+
+    <div>
+      性别: <span v-text="config.sex"></span>
+    </div>
+    <input v-model="name" type="text">
+  </div>
+
+  <script>
+    const vue = new Vue({
+      el: '#app',
+      data: {
+        name: 'Megalo',
+        config: {
+          age: 12,
+          sex: '男'
+        },
+      }
+    })
+
+    console.log(vue)
+  </script>
+</body>
+
+</html>
