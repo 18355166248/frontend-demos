@@ -1,40 +1,39 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
+import React from "react";
+import { observer } from "mobx-react-lite";
+import { useConfigContext } from "../../index.context";
 
 const TodoView = observer(({ todo }) => (
   <li>
     <input
       type="checkbox"
       checked={todo.finished}
-      onChange={(value) => {
-        // console.log("onchange", value);
-      }}
       onClick={() => (todo.finished = !todo.finished)}
     />
+
     {todo.name}
+
+    <span style={{ marginLeft: "20px" }}>
+      选中状态: {todo.finished ? "选中" : "未选中"}
+    </span>
   </li>
 ));
 
-class Todo extends Component {
-  add = () => {
-    this.props.todoList.add();
-  };
+function Todo() {
+  const configContext = useConfigContext();
 
-  render() {
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <button onClick={this.add}>添加</button>
-        </div>
-        <ul>
-          {this.props.todoList.todos.map((todo) => (
-            <TodoView todo={todo} key={todo.name} />
-          ))}
-        </ul>
-        Tasks left: {this.props.todoList.unfinishedTodoCount}
+        <button onClick={configContext.add}>添加</button>
       </div>
-    );
-  }
+      <ul>
+        {configContext.todos.map((todo) => (
+          <TodoView todo={todo} key={todo.name} />
+        ))}
+      </ul>
+      Tasks left: {configContext.unfinishedTodoCount}
+    </div>
+  );
 }
 
 export default observer(Todo);

@@ -7,12 +7,12 @@ class TodoList {
     makeAutoObservable(this);
   }
 
-  add() {
+  add = () => {
     this.todos.push({
       name: Math.random() * 1000 + Date.now(),
       finished: false,
     });
-  }
+  };
 
   get unfinishedTodoCount() {
     return this.todos.length;
