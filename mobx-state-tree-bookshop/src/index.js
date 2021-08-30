@@ -12,6 +12,15 @@ import {
 } from "mobx-state-tree";
 import createRouter from "./utils/router";
 
+// 对 shop.view.currentUrl 的变化做出反应
+reaction(
+  () => shop.view.currentUrl,
+  (path) => {
+    if (window.location.pathname !== path)
+      window.history.pushState(null, null, path);
+  }
+);
+
 const router = createRouter({
   "/book/:bookId": ({ bookId }) => {},
   "/cart": () => {},
