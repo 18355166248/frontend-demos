@@ -16,7 +16,20 @@ export const Book = types.model("Book", {
 export const BookStore = types
   .model("BookStore", {
     isLoading: true,
-    books: types.map(Book),
+    books: types.map(Book).hooks((self) => ({
+      afterCreate() {
+        console.log("map.hooks.afterCreate", self);
+      },
+      afterAttach() {
+        console.log("map.hooks.afterAttach", self);
+      },
+      beforeDetach() {
+        console.log("map.hooks.beforeDetach", self);
+      },
+      beforeDestroy() {
+        console.log("map.hooks.beforeDestroy", self);
+      },
+    })),
   })
   .views((self) => ({
     get shop() {

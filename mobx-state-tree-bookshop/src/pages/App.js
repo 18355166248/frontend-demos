@@ -89,7 +89,11 @@ onPatch(
     recording &&
     history.patches.unshift({
       data: s,
-      replay() {},
+      replay() {
+        recording = false;
+        applyPatch(shop, this.data);
+        recording = true;
+      },
     })
 );
 
