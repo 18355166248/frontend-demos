@@ -1,4 +1,5 @@
-import { types } from "mobx-state-tree";
+import { getParent, types } from "mobx-state-tree";
+import { values } from "mobx";
 
 export const ViewStore = types
   .model("ViewStore", {
@@ -18,6 +19,11 @@ export const ViewStore = types
           return "/404";
       }
     },
+    get selectBook() {
+      const books = values(getParent(self).bookStore.books);
+      const book = books.find((book) => book.id === self.selectBookId);
+      return book;
+    },
   }))
   .actions((self) => ({
     openBooksPage() {
@@ -29,5 +35,9 @@ export const ViewStore = types
     openBookPageById(id) {
       self.page = "book";
       self.selectBookId = id;
+    },
+    openBookPage(book) {
+      self.page = "book";
+      self.selectBookId = book.id;
     },
   }));

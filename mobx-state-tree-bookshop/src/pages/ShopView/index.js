@@ -4,10 +4,11 @@ import logo from "./shop.svg";
 import "./index.css";
 import Books from "./Books";
 import Cart from "./Cart";
+import BookDetail from "./BookDetail";
+import NotFound from "../NotFound";
 
 const ShopView = inject("shop")(
   observer(({ shop }) => {
-    console.log("isLoading", shop.isLoading, shop.sortedAvailableBooks);
     return (
       <div className="App">
         <ShopHeader />
@@ -42,12 +43,17 @@ const ShopHeader = () => (
   </div>
 );
 
+// 路由显示不用组件
 function renderPage(viewStore) {
   switch (viewStore.page) {
     case "books":
       return <Books />;
     case "cart":
       return <Cart />;
+    case "book":
+      return <BookDetail book={viewStore.selectBook} />;
+    default:
+      return <NotFound />;
   }
 }
 

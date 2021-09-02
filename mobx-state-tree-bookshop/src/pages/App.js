@@ -13,6 +13,7 @@ import createRouter from "../utils/router";
 import { observable, reaction } from "mobx";
 import { ShopStore } from "../stores/ShopStore.js";
 import ShopView from "./ShopView";
+import DevTools from "./ShopView/DevTools";
 
 const fetcher = (url) => window.fetch(url).then((response) => response.json());
 
@@ -20,16 +21,17 @@ const shop = ShopStore.create(
   {},
   {
     fetch: fetcher,
-    text: "测试环境变量文本",
+    alert: (txt) => {
+      console.log(txt);
+    },
   }
 );
 
+// 路由处理 start
 const router = createRouter({
-  "/book/:bookId": ({ bookId }) => {},
-  "/cart": () => {},
-  "/": () => {
-    console.log("/");
-  },
+  "/book/:bookId": ({ bookId }) => shop.view.openBookPageById(bookId),
+  "/cart": () => shop.view.openCartPage(),
+  "/": () => shop.view.openBooksPage(),
 });
 
 window.onpopstate = function historyChange(ev) {
@@ -37,6 +39,7 @@ window.onpopstate = function historyChange(ev) {
 };
 
 router(window.location.pathname);
+// 路由处理 end
 
 const history = {
   snapshots: observable.array([], { deep: false }),
@@ -48,6 +51,7 @@ function App() {
   return (
     <Provider shop={shop} history={history}>
       <ShopView />
+      <DevTools />
     </Provider>
   );
 }
@@ -62,3 +66,53 @@ reaction(
 );
 
 export default App;
+
+let recording = true; // 重放的时候禁止记录历史记录
+
+onSnapshot(
+  shop,
+  (s) =>
+    recording &&
+    history.snapshots.unshift({
+      data: s,
+      replay() {
+        recording = false;
+        applySnapshot(shop, this.data);
+        recording = true;
+      },
+    })
+);
+
+onPatch(
+  shop,
+  (s) =>
+    recording &&
+    history.patches.unshift({
+      data: s,
+      replay() {},
+    })
+);
+
+onAction(
+  shop,
+  (s) =>
+    recording &&
+    history.actions.unshift({
+      data: s,
+      replay() {
+        recording = false;
+        applyAction(shop, s);
+        recording = true;
+      },
+    })
+);
+
+// 初始化添加
+history.snapshots.push({
+  data: getSnapshot(shop),
+  replay() {
+    recording = false;
+    applySnapshot(shop, this.data);
+    recording = true;
+  },
+});

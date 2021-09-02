@@ -54,14 +54,14 @@
 
 a,
 a:visited {
-  color: orangered;
+  color: orange;
   cursor: pointer;
 }
 
 button {
-  border: 1px solid orangered;
+  border: 1px solid yellowgreen;
   background-color: white;
-  color: orangered;
+  color: yellowgreen;
   float: right;
   cursor: pointer;
   border-radius: 4px;
@@ -81,4 +81,17 @@ button:hover {
   position: relative;
   top: -1px;
   right: -1px;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+.mt-5 {
+  margin-top: 5px;
+}
+.mr-5 {
+  margin-right: 5px;
+}
+.mb-5 {
+  margin-bottom: 5px;
 }

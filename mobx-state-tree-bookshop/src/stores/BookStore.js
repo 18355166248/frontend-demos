@@ -23,7 +23,7 @@ export const BookStore = types
       return getParent(self);
     },
     get sortedAvailableBooks() {
-      return srotBooks(values(self.books));
+      return sortBooks(values(self.books));
     },
   }))
   .actions((self) => {
@@ -36,13 +36,14 @@ export const BookStore = types
 
       json.forEach((bookJson) => {
         self.books.put(bookJson);
-        // self.books.get(bookJson.id).isAvailable = true;
+        self.books.get(bookJson.id).isAvailable = true;
       });
     }
 
     const getBooks = flow(function* () {
       try {
         const json = yield self.shop.fetch("/books.json");
+        console.log(json);
         updateBooks(json);
         toogleLoading(false);
       } catch (error) {
@@ -55,7 +56,7 @@ export const BookStore = types
     };
   });
 
-function srotBooks(books) {
+function sortBooks(books) {
   return books
     .filter((book) => book.isAvailable)
     .sort((a, b) => (a.name > b.name ? 1 : a.name === b.name ? 0 : -1));

@@ -6,7 +6,7 @@
     "author": "言归正传",
     "series_t": "是一部连载于起点中文网的仙侠类网络小说，作者是言归正传",
     "sequence_i": 1,
-    "genre_s": "fantasy",
+    "genre_s": "仙侠",
     "inStock": true,
     "price": 12.5,
     "pages_i": 384
@@ -18,7 +18,7 @@
     "author": "卖报小郎君",
     "series_t": "大奉打更人无弹窗最新章节由网友提供,《大奉打更人》情节跌宕起伏、扣人心弦,是一本情节与文笔俱佳的玄幻小说,",
     "sequence_i": 2,
-    "genre_s": "fantasy",
+    "genre_s": "玄幻",
     "inStock": true,
     "price": 6.49,
     "pages_i": 304
@@ -30,7 +30,7 @@
     "author": "黑山老鬼",
     "sequence_i": 1,
     "series_t": "红月亮出现在天上的那一刻开始,全世界的人都成了疯子",
-    "genre_s": "fantasy",
+    "genre_s": "克鲁斯",
     "inStock": true,
     "price": 3.07,
     "pages_i": 64
@@ -41,7 +41,7 @@
     "name": "这个诅咒太棒了",
     "author": "行者有三",
     "sequence_i": 1,
-    "genre_s": "IT",
+    "genre_s": "异世界",
     "inStock": true,
     "price": 30.5,
     "pages_i": 475

@@ -1,6 +1,7 @@
 import { types, getEnv } from "mobx-state-tree";
 import { BookStore } from "./BookStore";
 import { ViewStore } from "./ViewStore";
+import { CartStore } from "./CartStore";
 
 export const ShopStore = types
   .model("ShopStore", {
@@ -8,10 +9,14 @@ export const ShopStore = types
       books: {},
     }),
     view: types.optional(ViewStore, {}),
+    cart: types.optional(CartStore, {}),
   })
   .views((self) => ({
     get fetch() {
       return getEnv(self).fetch;
+    },
+    get alert() {
+      return getEnv(self).alert;
     },
     get isLoading() {
       return self.bookStore.isLoading;
