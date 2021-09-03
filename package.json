@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bootstrap": "lerna bootstrap"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "todomvc-app-css": "^2.4.1"
   },
   "devDependencies": {
+    "lerna": "^4.0.0",
     "mst-middlewares": "^5.0.2",
     "remotedev": "^0.2.9"
   }

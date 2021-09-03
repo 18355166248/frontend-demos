@@ -1,0 +1,14 @@
+{
+  "npmClient": "npm",
+  "version": "0.0.0",
+  "command": {
+    "publish": {
+      "ignoreChanges": []
+    },
+    "bootstrap": {
+      "ignore": "",
+      "npmClientArgs": ["--no-package-lock"]
+    }
+  },
+  "packages": ["packages/*"]
+}
