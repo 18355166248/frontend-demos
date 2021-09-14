@@ -117,7 +117,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"index.js":[function(require,module,exports) {
+})({"react/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 var React = {
   createElement: createElement
 };
@@ -134,12 +140,106 @@ function createElement(tag, attrs) {
   };
 }
 
-var App = /*#__PURE__*/React.createElement("div", {
+var _default = React;
+exports.default = _default;
+},{}],"react-dom/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var ReactDom = {
+  render: render
+};
+
+function render(vnode, container) {
+  if (!vnode) return; // 如果 vnode 是字符串
+
+  if (typeof vnode === "string") {
+    var textNode = document.createTextNode(vnode);
+    console.log(container);
+    return container.appendChild(textNode);
+  } // 否则就是虚拟 Dom 对象
+
+
+  var tag = vnode.tag,
+      attrs = vnode.attrs,
+      children = vnode.children; // 创建节点对象
+
+  var dom = document.createElement(tag);
+
+  if (attrs) {
+    Object.keys(attrs).forEach(function (key) {
+      setAttribute(dom, key, attrs[key]);
+    });
+  }
+
+  return container.appendChild(dom);
+}
+
+function setAttribute(dom, key, value) {
+  if (key === "className") {
+    key = "class";
+  } // 如果是事件
+
+
+  if (/on\w+/.test(key)) {
+    key = key.toLowerCase();
+    dom[key] = value || "";
+  } else if (key === "style") {
+    if (!value || typeof value === "string") {
+      dom.style.cssText = value || "";
+    } else if (value && _typeof(value) === "object") {
+      for (var _key in value) {
+        if (typeof value[_key] === "number") {
+          dom.style[_key] = value[_key] + "px";
+        } else {
+          dom.style[_key] = value[_key];
+        }
+      }
+    }
+  } else {
+    console.log(key in dom, value);
+
+    if (key in dom) {
+      dom[key] = value || "";
+    }
+
+    if (value) {
+      dom.setAttribute(key, value);
+    } else {
+      dom.removeAttribute(key);
+    }
+  }
+}
+
+var _default = ReactDom;
+exports.default = _default;
+},{}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var _react = _interopRequireDefault(require("./react"));
+
+var _reactDom = _interopRequireDefault(require("./react-dom"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = /*#__PURE__*/_react.default.createElement("div", {
   className: "active",
-  title: "\u6D4B\u8BD5"
-}, "hello, ", /*#__PURE__*/React.createElement("span", null, "React"));
+  title: "\u6D4B\u8BD5",
+  style: {
+    width: 20
+  }
+}, "hello, ", /*#__PURE__*/_react.default.createElement("span", null, "React"));
+
+_reactDom.default.render(App, document.getElementById("root"));
+
 console.log(App);
-},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./react":"react/index.js","./react-dom":"react-dom/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -167,7 +267,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "5213" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "9146" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
