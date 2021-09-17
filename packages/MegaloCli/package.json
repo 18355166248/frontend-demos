@@ -1,0 +1,28 @@
+{
+  "name": "megalo-cli",
+  "version": "1.0.0",
+  "description": "一个 前端 cli 脚手架",
+  "main": "index.js",
+  "scripts": {
+    "test": "megalo-cli create vue ces"
+  },
+  "bin": {
+    "megalo-cli": "bin/megalo-cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=12.7.0"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^8.1.0",
+    "didyoumean": "^1.2.2",
+    "git-down-repo": "^2.4.3",
+    "inquirer": "^8.1.2",
+    "is-git-url": "^1.0.0",
+    "semver": "^7.3.5",
+    "validate-npm-package-name": "^3.0.0"
+  }
+}
