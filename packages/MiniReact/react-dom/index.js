@@ -3,7 +3,11 @@ const ReactDom = {
 };
 
 function render(vnode, container) {
-  if (!vnode) return;
+  container.appendChild(_render(vnode))
+}
+
+function _render(vnode) {
+  if (!vnode || typeof vnode === 'boolean') return;
 
   // 如果 vnode 是字符串
   if (typeof vnode === "string") {
@@ -24,7 +28,9 @@ function render(vnode, container) {
     });
   }
 
-  return container.appendChild(dom);
+  Array.isArray(children) && children.forEach(child => render(child, dom))
+
+  return dom;
 }
 
 function setAttribute(dom, key, value) {
@@ -49,10 +55,10 @@ function setAttribute(dom, key, value) {
       }
     }
   } else {
-    console.log(key in dom, value);
     if (key in dom) {
       dom[key] = value || "";
     }
+
     if (value) {
       dom.setAttribute(key, value);
     } else {
