@@ -29,9 +29,7 @@ async function create(templateName, projectName) {
   // 正真的目录地址
   const targetDir = path.resolve(cwd, projectName);
   // 校验项目名(包名)是否合法
-  console.log(name);
   const validateErr = validatePackageName(name);
-
   if (!validateErr.validForNewPackages) {
     // 打印错误
     console.error(chalk.red(`不合法的包名: ${name}`));
@@ -48,7 +46,6 @@ async function create(templateName, projectName) {
 
   // 同步的方法检测目录是否存在。
   // 2种情况: 1.已经存在目录 2.目录重新创建
-  console.log(targetDir, fs.existsSync(targetDir));
   if (fs.existsSync(targetDir)) {
     if (isCurrentDir) {
       // 当前目录创建
@@ -56,8 +53,8 @@ async function create(templateName, projectName) {
         {
           type: 'confirm',
           name: 'ok',
-          message: `是否要创建文件夹${name}`,
-          default: false
+          message: `确定当前目录生成项目: ${name}`,
+          default: true
         }
       ]);
       if (!ok) return;
