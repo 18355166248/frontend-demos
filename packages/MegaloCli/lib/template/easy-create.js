@@ -1,4 +1,4 @@
-const { startSpinner } = require('../utils/spinner');
+const { startSpinner, stopSpinner } = require('../utils/spinner');
 const templateGitRepo = require('../config/templateGitRepo.json');
 const chalk = require('chalk');
 const program = require('commander');
@@ -43,7 +43,7 @@ async function create(templateName, projectName) {
       validateErr.warnings.forEach((error) => {
         console.error(chalk.red.dim.italic(`Error: ${error}`));
       });
-    // process.exit(1);
+    process.exit(1);
   }
 
   // 同步的方法检测目录是否存在。
@@ -80,7 +80,6 @@ async function create(templateName, projectName) {
         }
       ]);
 
-      console.log(action);
       if (action === 'cancel') return;
       else if (action === 'overwrite') {
         console.log(`\n 删除文件夹: ${targetDir}`);
@@ -96,6 +95,9 @@ async function create(templateName, projectName) {
 }
 
 module.exports = (templateName, projectName) => {
-  create(templateName, projectName);
-  // startSpinner(`正在下载${templateName}模板...`);
+  return create(templateName, projectName).catch((e) => {
+    stopSpinner();
+    console.log(e);
+    process.exit(1);
+  });
 };
