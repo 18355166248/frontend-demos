@@ -27,6 +27,7 @@ program
     );
   });
 
+// 注意: 这段不执行  上面的初始化都不会生效
 program.parse(process.argv);
 
 function validateArgsLength(curLength, length) {

@@ -13,10 +13,10 @@ exports.startSpinner = (symbol, msg) => {
     msg = symbol;
     symbol = chalk.green('√');
   }
-  // if (lastMsg) {
-  //   // 清楚上次的spinner
-  //   spinner.stop();
-  // }
+  if (lastMsg) {
+    // 清除上次的spinner
+    spinner.stop();
+  }
 
   spinner.text = msg;
   lastMsg = {
@@ -29,4 +29,3 @@ exports.startSpinner = (symbol, msg) => {
 exports.stopSpinner = () => {
   spinner.stop();
 };
-

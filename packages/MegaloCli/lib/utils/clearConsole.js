@@ -1,5 +1,7 @@
+const { clearConsole } = require('./logger');
 
+let local = require('../../package.json').version;
 
-exports.generateTitle = function (checUpdate) {
-  const {}
-}
+exports.clearConsole = function (checUpdate) {
+  clearConsole(local);
+};
