@@ -5,7 +5,8 @@ const ReactDom = {
 };
 
 function render (vnode, container) {
-  container.appendChild(_render(vnode))
+  const dom = _render(vnode)
+  dom && container.appendChild(dom)
 }
 
 function createComponent (comp, props) {
@@ -24,20 +25,46 @@ function createComponent (comp, props) {
   return inst
 }
 
-function renderCompoent (comp) {
-  const renderRes = comp.render()
-  const base = _render(renderRes)
-  comp.base = base
+function setComponentProps (comp, props) {
+  if (!comp.base) { // 没有真实dom
+    if (comp.componentWillMount) comp.componentWillMount()
+  } else if (comp.componentWillReceiveProps) { // 有真实dom props变化
+    comp.componentWillReceiveProps()
+  }
+  comp.props = props
+  renderComponent(comp)
 }
 
-function setComponentProps (comp, props) {
-  comp.props = props
-  renderCompoent(comp)
+export function renderComponent (comp) {
+  const renderRes = comp.render() // 生成虚拟dom
+  const base = _render(renderRes)
+
+  // 有真实dom
+  if (comp.base && comp.componentwillUpdate) {
+    comp.componentwillUpdate()
+  }
+
+  if (comp.base) {
+    if (comp.componentDidUpdate) {
+      comp.componentDidUpdate()
+    }
+  } else if (comp.componentDidMount) { // dom生成完成 但是没有加载 前
+    comp.componentDidMount()
+  }
+
+  if (comp.base && comp.base.parentNode) {
+    comp.base.parentNode.replaceChild(base, comp.base)
+  }
+  comp.base = base
 }
 
 function _render (vnode) {
   if (!vnode || typeof vnode === 'boolean') return;
 
+  // 如果是number 转成字符串
+  if (typeof vnode === 'number') {
+    vnode = String(vnode)
+  }
   // 如果 vnode 是字符串
   if (typeof vnode === "string") {
     return document.createTextNode(vnode);
@@ -45,6 +72,7 @@ function _render (vnode) {
 
   // 否则就是虚拟 Dom 对象
   const { tag, attrs, childrens } = vnode;
+
   // 如果tag是函数, 则渲染组件
   if (typeof tag === 'function') {
     // 1. 创建组件
@@ -52,6 +80,7 @@ function _render (vnode) {
     // 2. 设置组价的属性
     setComponentProps(comp, vnode.attrs)
     // 3. 返回组件渲染的节点
+
     return comp.base
   }
 
