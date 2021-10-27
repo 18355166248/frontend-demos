@@ -9,6 +9,7 @@ function createElement (tag, attrs, ...childrens) {
     tag,
     attrs,
     childrens,
+    key: attrs ? attrs.key : null
   };
 }
 

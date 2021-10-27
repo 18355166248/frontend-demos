@@ -1,12 +1,14 @@
 import Component from '../react/component'
+import { diff } from './diff'
 
 const ReactDom = {
   render,
 };
 
-function render (vnode, container) {
-  const dom = _render(vnode)
-  dom && container.appendChild(dom)
+function render (vnode, container, dom) {
+  return diff(dom, vnode, container)
+  // const dom = _render(vnode)
+  // dom && container.appendChild(dom)
 }
 
 function createComponent (comp, props) {
@@ -25,7 +27,7 @@ function createComponent (comp, props) {
   return inst
 }
 
-function setComponentProps (comp, props) {
+export function setComponentProps (comp, props) {
   if (!comp.base) { // 没有真实dom
     if (comp.componentWillMount) comp.componentWillMount()
   } else if (comp.componentWillReceiveProps) { // 有真实dom props变化
@@ -98,7 +100,7 @@ function _render (vnode) {
   return dom;
 }
 
-function setAttribute (dom, key, value) {
+export function setAttribute (dom, key, value) {
   if (key === "className") {
     key = "class";
   }

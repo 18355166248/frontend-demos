@@ -54,7 +54,13 @@ class Home1 extends Component {
   }
 }
 
-ReactDom.render(<Home1 name="actice" />, document.getElementById("root"));
+const ele = (
+  <div className='active' title='123'>
+      hello,<span>react</span>
+  </div>
+)
+
+ReactDom.render(ele, document.getElementById("root"));
 
 
 // const App = (
