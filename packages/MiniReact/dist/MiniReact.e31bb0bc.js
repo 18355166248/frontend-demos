@@ -124,10 +124,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.diff = diff;
+exports.diffNode = diffNode;
 
 var _index = require("./index");
-
-function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-only"); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -180,7 +179,7 @@ function diffNode(dom, vnode) {
   }
 
   if (typeof vnode.tag === 'function') {
-    diffComponent(out, vnode);
+    return diffComponent(out, vnode);
   } // 非文本Dom节点
 
 
@@ -231,7 +230,8 @@ function diffChildren(dom, vnodes) {
 
     _toConsumableArray(vnodes).forEach(function (vnode, i) {
       // 获取虚拟dom所有的key
-      var key = vnode.key;
+      console.log(vnode);
+      var key = vnode && vnode.key;
       var child;
 
       if (key) {
@@ -243,7 +243,7 @@ function diffChildren(dom, vnodes) {
       } else if (childrenLen > min) {
         // 如果没有key 则优先找类型相同的节点
         for (var j = 0; j < children.length; j++) {
-          var c = array[j];
+          var c = children[j];
 
           if (c) {
             child = c;
@@ -315,9 +315,18 @@ function diffComponent(dom, vnode) {
     // 组件发生变化
     if (comp) {
       unmountComonent(comp);
-      null, _readOnlyError("comp");
-    }
+      comp = null;
+    } // 1. 创建新组件
+
+
+    comp = (0, _index.createComponent)(vnode.tag, vnode.attrs); // 2. 设置组件属性
+
+    (0, _index.setComponentProps)(comp, vnode.attrs); // 3. 给当期挂载base
+
+    dom = comp.base;
   }
+
+  return dom;
 }
 },{"./index":"react-dom/index.js"}],"react-dom/index.js":[function(require,module,exports) {
 "use strict";
@@ -325,6 +334,7 @@ function diffComponent(dom, vnode) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.createComponent = createComponent;
 exports.setComponentProps = setComponentProps;
 exports.renderComponent = renderComponent;
 exports.setAttribute = setAttribute;
@@ -380,10 +390,11 @@ function setComponentProps(comp, props) {
 }
 
 function renderComponent(comp) {
+  var base;
   var renderRes = comp.render(); // 生成虚拟dom
+  // const base = _render(renderRes)
 
-  var base = _render(renderRes); // 有真实dom
-
+  base = (0, _diff.diffNode)(comp.base, renderRes); // 有真实dom
 
   if (comp.base && comp.componentwillUpdate) {
     comp.componentwillUpdate();
@@ -396,11 +407,11 @@ function renderComponent(comp) {
   } else if (comp.componentDidMount) {
     // dom生成完成 但是没有加载 前
     comp.componentDidMount();
-  }
+  } // 节点替换  diff后不需要了
+  // if (comp.base && comp.base.parentNode) {
+  //   comp.base.parentNode.replaceChild(base, comp.base)
+  // }
 
-  if (comp.base && comp.base.parentNode) {
-    comp.base.parentNode.replaceChild(base, comp.base);
-  }
 
   comp.base = base;
 }
@@ -654,6 +665,7 @@ var Home1 = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      console.log(this.props);
       var _this$props = this.props,
           name = _this$props.name,
           name1 = _this$props.name1;
@@ -680,9 +692,12 @@ var Home1 = /*#__PURE__*/function (_Component) {
 var ele = /*#__PURE__*/_react.default.createElement("div", {
   className: "active",
   title: "123"
-}, "hello,", /*#__PURE__*/_react.default.createElement("span", null, "react"));
+}, "hello,", /*#__PURE__*/_react.default.createElement("span", null, "react")); // ReactDom.render(ele, document.getElementById("root"));
 
-_reactDom.default.render(ele, document.getElementById("root")); // const App = (
+
+_reactDom.default.render( /*#__PURE__*/_react.default.createElement(Home1, {
+  name: "11"
+}), document.getElementById("root")); // const App = (
 //   <div className="active" title="测试" style={{ width: 20 }}>
 //     hello, <span>React</span>
 //   </div>
@@ -715,7 +730,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "4976" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "2917" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

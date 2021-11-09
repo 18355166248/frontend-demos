@@ -1,5 +1,5 @@
 import Component from '../react/component'
-import { diff } from './diff'
+import { diff, diffNode } from './diff'
 
 const ReactDom = {
   render,
@@ -11,7 +11,7 @@ function render (vnode, container, dom) {
   // dom && container.appendChild(dom)
 }
 
-function createComponent (comp, props) {
+export function createComponent (comp, props) {
   let inst
   if (comp.prototype && comp.prototype.render) {
     // 如果是类组件 创建实例 返回
@@ -38,8 +38,11 @@ export function setComponentProps (comp, props) {
 }
 
 export function renderComponent (comp) {
+  let base
   const renderRes = comp.render() // 生成虚拟dom
-  const base = _render(renderRes)
+  // const base = _render(renderRes)
+
+  base = diffNode(comp.base, renderRes)
 
   // 有真实dom
   if (comp.base && comp.componentwillUpdate) {
@@ -54,9 +57,10 @@ export function renderComponent (comp) {
     comp.componentDidMount()
   }
 
-  if (comp.base && comp.base.parentNode) {
-    comp.base.parentNode.replaceChild(base, comp.base)
-  }
+  // 节点替换  diff后不需要了
+  // if (comp.base && comp.base.parentNode) {
+  //   comp.base.parentNode.replaceChild(base, comp.base)
+  // }
   comp.base = base
 }
 

@@ -40,6 +40,7 @@ class Home1 extends Component {
   }
 
   render () {
+    console.log(this.props)
     const { name, name1 } = this.props
     const { num } = this.state
     console.log('num', num)
@@ -56,11 +57,12 @@ class Home1 extends Component {
 
 const ele = (
   <div className='active' title='123'>
-      hello,<span>react</span>
+    hello,<span>react</span>
   </div>
 )
 
-ReactDom.render(ele, document.getElementById("root"));
+// ReactDom.render(ele, document.getElementById("root"));
+ReactDom.render(<Home1 name="11" />, document.getElementById("root"));
 
 
 // const App = (

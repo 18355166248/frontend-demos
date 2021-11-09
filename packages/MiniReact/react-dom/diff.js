@@ -1,4 +1,4 @@
-import { setAttribute, setComponentProps } from './index'
+import { setAttribute, setComponentProps, createComponent } from './index'
 
 export function diff (dom, vnode, container) {
   const ret = diffNode(dom, vnode)
@@ -11,7 +11,7 @@ export function diff (dom, vnode, container) {
 }
 
 // 对比
-function diffNode (dom, vnode) {
+export function diffNode (dom, vnode) {
   let out = dom;
   if (!vnode || typeof vnode === 'boolean') return;
 
@@ -38,7 +38,7 @@ function diffNode (dom, vnode) {
   }
 
   if (typeof vnode.tag === 'function') {
-    diffComponent(out, vnode)
+    return diffComponent(out, vnode)
   }
 
   // 非文本Dom节点
@@ -88,7 +88,8 @@ function diffChildren (dom, vnodes) {
     let childrenLen = children.length;
     [...vnodes].forEach((vnode, i) => {
       // 获取虚拟dom所有的key
-      const key = vnode.key
+      console.log(vnode)
+      const key = vnode && vnode.key
       let child;
       if (key) {
         // 如果有key 找到对应key值的节点
@@ -99,7 +100,7 @@ function diffChildren (dom, vnodes) {
       } else if (childrenLen > min) {
         // 如果没有key 则优先找类型相同的节点
         for (let j = 0; j < children.length; j++) {
-          let c = array[j];
+          let c = children[j];
           if (c) {
             child = c
             children[j] = undefined
@@ -156,7 +157,7 @@ function diffAttribute (dom, vnode) {
 }
 
 function diffComponent (dom, vnode) {
-  const comp = dom
+  let comp = dom
   // 如果组件没有变化 重新设置props
   if (comp && comp.constructor === vnode.tag) {
     // 重新设置props
@@ -169,5 +170,14 @@ function diffComponent (dom, vnode) {
       unmountComonent(comp)
       comp = null
     }
+
+    // 1. 创建新组件
+    comp = createComponent(vnode.tag, vnode.attrs)
+    // 2. 设置组件属性
+    setComponentProps(comp, vnode.attrs)
+    // 3. 给当期挂载base
+    dom = comp.base
   }
+
+  return dom
 }
